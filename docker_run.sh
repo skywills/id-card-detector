@@ -1,0 +1,1 @@
+docker run -it --rm -v $PWD:/tmp -w /tmp skywills87/id_detector python ./id_card_detection_image.py
