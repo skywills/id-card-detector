@@ -1,6 +1,6 @@
 FROM tensorflow/tensorflow:2.3.1
 
-COPY requirements.txt /tmp/
+COPY requirements_docker.txt /tmp/requirements.txt
 
 RUN apt-get update \
     && apt-get install -y \
