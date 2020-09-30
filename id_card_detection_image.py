@@ -30,7 +30,8 @@ PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
 PATH_TO_LABELS = os.path.join(CWD_PATH,'data','labelmap.pbtxt')
 
 # Path to image
-PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
+#PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
+PATH_TO_IMAGE = '/Users/williamkhoo/Desktop/projects/main/mxw/kyc/latest_cropped/cn/id/000014.jpg'
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 1
@@ -47,13 +48,13 @@ category_index = label_map_util.create_category_index(categories)
 # Load the Tensorflow model into memory.
 detection_graph = tf.Graph()
 with detection_graph.as_default():
-    od_graph_def = tf.GraphDef()
-    with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+    od_graph_def = tf.compat.v1.GraphDef()
+    with tf.io.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
         serialized_graph = fid.read()
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
 
-    sess = tf.Session(graph=detection_graph)
+    sess = tf.compat.v1.Session(graph=detection_graph)
 
 # Define input and output tensors (i.e. data) for the object detection classifier
 
@@ -90,7 +91,7 @@ image, array_coord = vis_util.visualize_boxes_and_labels_on_image_array(
     np.squeeze(classes).astype(np.int32),
     np.squeeze(scores),
     category_index,
-    use_normalized_coordinates=True,
+    use_normalized_coordinates=False,
     line_thickness=3,
     min_score_thresh=0.60)
 
@@ -99,9 +100,9 @@ ymin, xmin, ymax, xmax = array_coord
 shape = np.shape(image)
 im_width, im_height = shape[1], shape[0]
 (left, right, top, bottom) = (xmin * im_width, xmax * im_width, ymin * im_height, ymax * im_height)
-
+output_path = os.path.join(CWD_PATH,'output/cropped.png')
 # Using Image to crop and save the extracted copied image
-im = Image.open(image_path)
+im = Image.open(PATH_TO_IMAGE)
 im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
