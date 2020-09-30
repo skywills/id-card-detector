@@ -30,8 +30,7 @@ PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
 PATH_TO_LABELS = os.path.join(CWD_PATH,'data','labelmap.pbtxt')
 
 # Path to image
-#PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
-PATH_TO_IMAGE = '/Users/williamkhoo/Desktop/projects/main/mxw/kyc/latest_cropped/cn/id/000014.jpg'
+PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 1
