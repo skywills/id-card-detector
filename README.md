@@ -59,3 +59,8 @@ python3 id_card_detection_image.py
 https://hub.docker.com/r/intel/intel-optimized-tensorflow
 
 https://software.intel.com/content/www/us/en/develop/articles/intel-optimization-for-tensorflow-installation-guide.html
+
+
+
+build tensorflow
+bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both -k //tensorflow/tools/pip_package:build_pip_package

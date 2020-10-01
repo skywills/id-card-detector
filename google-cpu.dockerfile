@@ -1,5 +1,4 @@
 ARG TF_VERSION=2-3
-ARG OPENCV_VERSION=4.4.0
 FROM gcr.io/deeplearning-platform-release/tf2-cpu.${TF_VERSION}
 
 COPY requirements_docker.txt /tmp/requirements.txt
@@ -26,6 +25,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
+ARG OPENCV_VERSION=4.4.0
 RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip \
 && unzip ${OPENCV_VERSION}.zip \
 && mkdir /opencv-${OPENCV_VERSION}/cmake_binary \
