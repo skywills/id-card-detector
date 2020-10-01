@@ -147,11 +147,14 @@ def clean_edge(image):
     return cv2.cvtColor(gray, cv2.COLOR_BGR2RGB)
 
 # crop image method, can be edge detection, then crop
-def crop_image(src_path, targe_path):
+def crop_image(src_path, targe_path, clean_edge_first=False):
     #img = Image.open(src_path)
     img = cv2.imread(src_path, cv2.COLOR_BGR2RGB)
-    im_edge = clean_edge(img)
-    im = id_detect(im_edge)
+    if clean_edge_first:
+        img = clean_edge(img)
+    else:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    im = id_detect(img)
     im.save(targe_path, quality=95)
 
 def crop_from_folder():
@@ -168,7 +171,7 @@ def crop_from_folder():
     for file in list(lst):
         output_path = "{}/{}".format(target,os.path.basename(file))
         try:
-            crop_image(file, output_path)
+            crop_image(file, output_path, True)
         except:
             print("failed on process {}".format(file))
         print(" processing {} image".format(i))

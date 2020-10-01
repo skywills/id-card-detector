@@ -59,7 +59,7 @@ def clean_low_dimension(folder):
 
 def main():
     source = args['src']
-    #rotate_images(source)
+    rotate_images(source)
     clean_low_dimension(source)
 
 
