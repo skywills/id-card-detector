@@ -175,7 +175,7 @@ def crop_from_folder():
         i+=1
 
 def test_crop():
-    test_image = "/Users/williamkhoo/Desktop/projects/main/mxw/kyc/edge_detect/cn/000034.jpg"
+    test_image = CWD_PATH + "/test_images/image1.png"
     output_folder = CWD_PATH + "/output"
     crop_image(test_image,output_folder + "/cropped.jpg")
     crop_image(test_image,output_folder + "/cropped2.jpg")

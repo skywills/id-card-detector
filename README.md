@@ -54,3 +54,8 @@ python3 id_card_detection_image.py
 
 ![result](./static/result.png "result")  
 
+
+**Intel Optimized tensorflow**
+https://hub.docker.com/r/intel/intel-optimized-tensorflow
+
+https://software.intel.com/content/www/us/en/develop/articles/intel-optimization-for-tensorflow-installation-guide.html

@@ -1,6 +1,6 @@
-ARG TF_VERSION=2.3.1
+ARG TF_VERSION=2.3.0
 ARG OPENCV_VERSION=4.4.0
-FROM tensorflow/tensorflow:${TF_VERSION}
+FROM intel/intel-optimized-tensorflow:${TF_VERSION}
 
 COPY requirements_docker.txt /tmp/requirements.txt
 
