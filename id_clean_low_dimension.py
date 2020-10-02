@@ -21,6 +21,7 @@ def rotate_image(src):
     #image = Image.open(src)
     #out = image.rotate(90, expand=True)
     #out.save(src)
+    print('processing rotate ' + src)
     image = Image.open(src)
     out = cv2.rotate(np.array(image), cv2.ROTATE_90_CLOCKWISE)
     cv2.imwrite(src,cv2.cvtColor(out, cv2.COLOR_BGR2RGB))

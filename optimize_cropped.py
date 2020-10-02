@@ -41,6 +41,18 @@ PATH_TO_LABELS = os.path.join(CWD_PATH,'data','labelmap.pbtxt')
 # Number of classes the object detector can identify
 NUM_CLASSES = 1
 
+NUM_PARALLEL_EXEC_UNITS = 20
+
+config = tf.compat.v1.ConfigProto(intra_op_parallelism_threads = NUM_PARALLEL_EXEC_UNITS, 
+         inter_op_parallelism_threads = 1, 
+         allow_soft_placement = False, 
+         device_count = {'CPU': NUM_PARALLEL_EXEC_UNITS })
+
+os.environ["OMP_NUM_THREADS"] = str(NUM_PARALLEL_EXEC_UNITS)
+os.environ["KMP_BLOCKTIME"] = "30"
+os.environ["KMP_SETTINGS"] = "1"
+os.environ["KMP_AFFINITY"]= "granularity=fine,verbose,compact,1,0"         
+
 # Load the label map.
 # Label maps map indices to category names, so that when our convolution
 # network predicts `5`, we know that this corresponds to `king`.
@@ -59,7 +71,7 @@ with detection_graph.as_default():
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
 
-    sess = tf.compat.v1.Session(graph=detection_graph)
+    sess = tf.compat.v1.Session(config=config, graph=detection_graph)
 
 # Define input and output tensors (i.e. data) for the object detection classifier
 
@@ -185,6 +197,7 @@ def test_crop():
     output_folder = CWD_PATH + "/output"
     crop_image(test_image,output_folder + "/cropped.jpg")
     crop_image(test_image,output_folder + "/cropped2.jpg")
+    crop_image(test_image,output_folder + "/cropped3.jpg")
 
 def main():
     test_crop()
