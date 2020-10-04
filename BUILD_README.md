@@ -37,6 +37,9 @@ export include_dir=`python -c "from distutils.sysconfig import get_python_inc; p
 export library=`python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))"`
 export default_exec=`which python3.6`
 export opencv_contrib_path="~/Desktop/projects/github/opencv/opencv_contrib"
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64 \
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 mkdir opencv
 cd opencv
 git clone https://github.com/opencv/opencv.git
