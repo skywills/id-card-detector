@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+output/
+test_images/
+!test_images/image1.png
