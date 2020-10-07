@@ -8,7 +8,7 @@ MODEL_NAME = 'model'
 HED_NAME = 'HED'
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
-IMAGE_NAME = 'test_images/image1.png'
+IMAGE_NAME = 'test_images/001459.jpeg'
 PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
 HED_PROTOTEXT_PATH = os.path.join(CWD_PATH,MODEL_NAME,HED_NAME,'deploy.prototxt')
 HED_CAFFEE_MODEL_PATH = os.path.join(CWD_PATH,MODEL_NAME,HED_NAME,'hed_pretrained_bsds.caffemodel')
