@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # 将身份证号码区域从身份证中提取出
 def Extract(op_image, sh_image):
  
-    binary, contours, hierarchy = cv.findContours(op_image,
+    contours, hierarchy = cv.findContours(op_image,
             cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contours.remove(contours[0])
     max_x, max_y, max_w, max_h = cv.boundingRect(contours[0])
@@ -55,7 +55,7 @@ def Segmentation(cut_img, kernel, n):
     #cv.waitKey(0)
  
     cut_copy = cut_img.copy()
-    binary, contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contours.remove(contours[0])
     for c in contours:
         x, y, w, h = cv.boundingRect(c)
@@ -68,7 +68,7 @@ def Segmentation(cut_img, kernel, n):
     cv.waitKey(0)
  
     # 尝试进行分割
-    binary, contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     #tmp_img = cut_img.copy()
     # 如果识别的轮廓数量不是n+1位(首先是一个整个区域的轮廓，然后是n位号码各自的轮廓，身份证和匹配模板分割均用此方法)
     while len(contours)!=n+1:
@@ -79,7 +79,7 @@ def Segmentation(cut_img, kernel, n):
             cv.imshow("cut_copy", cut_copy)
             cv.waitKey(0)
             # 再次尝试提取身份证区域的轮廓并将轮廓内区域用黑色覆盖
-            binary, contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+            contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
             # 去掉提取出的第一个轮廓(第一个轮廓为整张图片)
             contours.remove(contours[0])
             for c in contours:
@@ -101,7 +101,7 @@ def Segmentation(cut_img, kernel, n):
             cv.imshow("cut_copy", cut_copy)
             cv.waitKey(0)
             #再次尝试提取身份证区域的轮廓并将轮廓内区域用黑色覆盖
-            binary, contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+            contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
             #去掉提取出的第一个轮廓(第一个轮廓为整张图片)
             contours.remove(contours[0])
             for c in contours:
@@ -115,7 +115,7 @@ def Segmentation(cut_img, kernel, n):
             if len(contours) == n:
                 break
     # 上述while()中循环完成后，处理的图像基本满足分割要求，进行最后的提取分割
-    binary, contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(cut_copy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contours.remove(contours[0])
     color = (0, 0, 0)
     for c in contours:
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     img_num = sort(contours, cut_img)
  
     # 识别用的模板
-    tplt_path = '/home/image/Pictures/template.jpg'
+    tplt_path = '    path = 'IDcard01.jpg'
     tplt_img = cv.imread(tplt_path, 0)
     #cv.imshow('Template image', tplt_img)
     #cv.waitKey(0)

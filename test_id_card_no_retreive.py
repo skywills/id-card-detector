@@ -10,6 +10,7 @@ PATH_TO_XML = os.path.join(CWD_PATH, 'model/haarcascade_frontalface_alt.xml')
 IMAGE_NAME = 'test_images/000448.jpg'
 PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
 TMP_OUTPUT = os.path.join(CWD_PATH, 'output/2_crop.jpg')
+TMP_OUTPUT_LARGE = os.path.join(CWD_PATH, 'output/1_large.jpg')
 # 身份证号
 r = r'^([1-9]\d{5}[12]\d{3}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])\d{3}[0-9xX])$'
 
@@ -83,7 +84,7 @@ def identity_OCR_byFaceRect(oImg, faceRect):
     iw, ih = oImg.size
     # 将身份证放大3倍
     largeImg = oImg.resize((iw * 3, ih * 3), Image.ANTIALIAS)
-    # largeImg.save('1_large.png')
+    largeImg.save(TMP_OUTPUT_LARGE)
 
     (x1, y1, x2, y2) = CalcIdRectByFaceRect_normal(x, y, w, h)
     region = (x1 * 3, y1 * 3, x2 * 3, y2 * 3)
@@ -159,7 +160,7 @@ def DetectFacesAndIDs(pic_path):
             cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
             code, (x1, y1, x2, y2) = identity_OCR_byFaceRect(oImg, faceRect)
             cv2.rectangle(frame, (x1, y1), (x2, y2), color2, 2)
-            #cv2.imwrite("%s.iddet.png" % pic_path, frame)
+            cv2.imwrite("%s.iddet.png" % pic_path, frame)
             return code
     return 'NONE'
 

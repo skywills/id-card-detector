@@ -1,5 +1,4 @@
-ARG TF_VERSION=2.3.1
-ARG OPENCV_VERSION=4.4.0
+ARG TF_VERSION=2.3.1-jupyter
 FROM tensorflow/tensorflow:${TF_VERSION}
 
 COPY requirements_docker.txt /tmp/requirements.txt
@@ -23,9 +22,12 @@ RUN apt-get update \
         libpq-dev \
         libsm6 libxext6 \
         libxrender-dev \
+        libgl1-mesa-glx \
+        tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
+ARG OPENCV_VERSION=4.4.0
 RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip \
 && unzip ${OPENCV_VERSION}.zip \
 && mkdir /opencv-${OPENCV_VERSION}/cmake_binary \
