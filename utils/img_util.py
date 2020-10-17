@@ -35,3 +35,23 @@ def border_detection(image,edges):
         image = image[min(x):max(x),min(y):max(y)]
     
     return image# , min(x),max(x),min(y),max(y)
+
+def findContour(gray):
+    binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    cnts = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+    contours = []
+    last_cnt = None
+    max_area = x = y = w = h = 0
+
+
+    for c in cnts:
+        area = cv2.contourArea(c)
+        if area > max_area:
+            x, y, w, h = cv2.boundingRect(c)
+            max_area = area
+            last_cnt = c
+            contours.append(c)
+
+    return contours, last_cnt
+

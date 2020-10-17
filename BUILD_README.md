@@ -29,13 +29,14 @@ libavcodec-dev libavformat-dev libswscale-dev \
 libv4l-dev libxvidcore-dev libx264-dev \
 libgtk-3-dev \
 libatlas-base-dev gfortran 
-conda create --name opencv-build python=3.6
+conda create --name opencv-build python=3.7
 conda activate opencv-build
 conda install numpy
 export python_exec=`which python`
 export include_dir=`python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"`
 export library=`python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))"`
-export default_exec=`which python3.6`
+export default_exec=`which python3.7`
+export opencv_install_package="~/anaconda3/envs/opencv-build/lib/python3.7/site-packages"
 export opencv_contrib_path="~/Desktop/projects/github/opencv/opencv_contrib"
 export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64 \
@@ -64,6 +65,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D CUDA_FAST_MATH=1 \
 -D CUDA_ARCH_BIN=6.1 \
 -D WITH_CUBLAS=1 \
+-D BUILD_TIFF=ON \
 -D OPENCV_EXTRA_MODULES_PATH=$opencv_contrib_path/modules/ \
 -D HAVE_opencv_python3=ON \
 -D PYTHON_EXECUTABLE=$python_exec \
@@ -75,4 +77,10 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D CUDNN_INCLUDE_DIR=/usr/local/cuda/include  \
 .. 
 ```
+
+make -j8
+sudo make install
+sudo /bin/bash -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
+sudo ldconfig
 https://github.com/edeane/cards
+https://github.com/serengil/tensorflow-101/blob/master/python/face-alignment.py
