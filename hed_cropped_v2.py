@@ -35,9 +35,11 @@ CWD_PATH = os.getcwd()
 HED_PROTOTEXT_PATH = os.path.join(CWD_PATH,MODEL_NAME,HED_NAME,'deploy.prototxt')
 HED_CAFFEE_MODEL_PATH = os.path.join(CWD_PATH,MODEL_NAME,HED_NAME,'hed_pretrained_bsds.caffemodel')
 PATH_FACE_XML = os.path.join(CWD_PATH, 'model/haarcascade_frontalface_alt.xml')
+PATH_EYE_XML = os.path.join(CWD_PATH, 'model/haarcascade_eye.xml')
+PATH_NOSE_XML = os.path.join(CWD_PATH, 'model/haarcascade_mcs_nose.xml')
 
 net = hed_util.load_dnn(HED_PROTOTEXT_PATH,HED_CAFFEE_MODEL_PATH)
-face_detect = HumanFaceDetect(PATH_FACE_XML)
+face_detect = HumanFaceDetect()
 min_height = 1000
 
 def rename_withprefix(path, prefix):
@@ -113,8 +115,8 @@ def test_crop():
     crop_image(test_image,output_folder + "/cropped2.jpg")
 
 def main():
-    #test_crop()
-    crop_from_folder()
+    test_crop()
+    #crop_from_folder()
 
 
 
