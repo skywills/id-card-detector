@@ -46,7 +46,7 @@ def edge_detection(dnn, image,scalefactor=1.0, size=(500, 500), mean=(104.006987
 def crop_image(dnn, image,scalefactor=1.0, size=(500, 500), mean=(104.00698793, 116.66876762, 122.67891434), swapRB=False, crop=False):
     hed_image = edge_detection(dnn, image, scalefactor, size, mean, swapRB, crop)
     gray = cv2.cvtColor(hed_image, cv2.COLOR_BGR2GRAY)
-    contours, last_cnt = img_util.findContour(gray)
+    contours, last_cnt = img_util.findContour(gray, convert_binary=True)
     if (last_cnt is None):
         return None
     x,y,w,h = cv2.boundingRect(contours[len(contours)-1])

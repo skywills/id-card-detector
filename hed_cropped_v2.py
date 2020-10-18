@@ -9,6 +9,7 @@ import glob
 import time
 from shutil import copyfile
 from utils.face_util import HumanFaceDetect
+from utils.dlib_face_util import DlibHumanFaceDetect
 from PIL import Image
 
 import argparse
@@ -40,6 +41,7 @@ PATH_NOSE_XML = os.path.join(CWD_PATH, 'model/haarcascade_mcs_nose.xml')
 
 net = hed_util.load_dnn(HED_PROTOTEXT_PATH,HED_CAFFEE_MODEL_PATH)
 face_detect = HumanFaceDetect()
+dlib_face_detect = DlibHumanFaceDetect()
 min_height = 1000
 
 def rename_withprefix(path, prefix):
@@ -54,29 +56,51 @@ def is_jpg(path):
     extension = os.path.splitext(path)[1]
     return extension == '.jpeg' or extension == '.jpg'
 
+def save_image(path, img):
+    if(is_jpg(path)):
+        cv2.imwrite(path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB),[cv2.IMWRITE_JPEG_QUALITY, 85])
+    else:
+        cv2.imwrite(path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
 # crop image method, can be edge detection, then crop
 def crop_image(src_path, target_path):
-    #img = cv2.imread(src_path, cv2.COLOR_BGR2RGB)
     target_path = preprocess_filename(target_path)
-    img = np.array(Image.open(src_path))
+    origin = np.array(Image.open(src_path))
     start = time.time()
-    cropped = hed_util.crop_image(net, img)
-    if(cropped is None or not face_detect.hasFaces(cropped) or cropped.shape[0] < min_height):
-        cropped = img
-        print('cropped image dont have face or has no contour or does not meet min height {} img height {}'
-        .format( min_height, cropped.shape[0]))
-        target_path = rename_withprefix(target_path,'origin')
+    hasFace, img = try_rotate_image_with_face_detect(origin)
+    print('has face ', hasFace)
+    if (hasFace):
+        cropped = hed_util.crop_image(net, img)
+        if(cropped is None or not face_detect.hasFaces(cropped) or cropped.shape[0] < min_height):
+            cropped = img
+            if(cropped is None):
+                print('failed to crop image')
+            elif (cropped.shape[0] < min_height):
+                print('does not meet min height {} img height {}'.format( min_height, cropped.shape[0]))
+            else:
+                print('no face detected')
+            #print('cropped image dont have face or has no contour or does not meet min height {} img height {}'
+            #.format( min_height, cropped.shape[0]))
+            target_path = rename_withprefix(target_path,'origin')
+        else:
+            #cropped = try_rotate_image(cropped)
+            target_path = rename_withprefix(target_path,'cropped')
     else:
-        cropped = try_rotate_image(cropped)
-        target_path = rename_withprefix(target_path,'cropped')
-    #hed_edge = hed_util.edge_detection(net, im)
-    #cropped = clean_edge(im, hed_edge)
+        cropped = origin
+        print('failed to detect face while try rotate image')
     print("image: {}, used time: {}".format(src_path, time.time() - start))
-    if(is_jpg(target_path)):
-        cv2.imwrite(target_path, cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB),[cv2.IMWRITE_JPEG_QUALITY, 85])
-        #cv2.imwrite(target_path, cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB))
-    else:
-        cv2.imwrite(target_path, cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB))
+    save_image(target_path, cropped)
+
+
+def try_rotate_image_with_face_detect(img):
+    # rotate with 4 angle, 0, 90, 180,270
+    for i in range(3):
+        print('trying to rotate image counterclockwise to {} degree'.format(i * 90))
+        raw = img if i == 0 else np.rot90(img,i)
+        hasFace = dlib_face_detect.hasFaces(raw)
+        if(hasFace):
+            return True,raw
+    return False,img
 
 def try_rotate_image(img):
     height, width, _ = img.shape

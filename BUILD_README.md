@@ -1,3 +1,7 @@
+**build opencv docker**
+https://qiita.com/kndt84/items/9524b1ab3c4df6de30b8
+
+
 **build opencv with cuda**
 ```
 sudo apt update

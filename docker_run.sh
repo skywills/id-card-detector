@@ -16,7 +16,10 @@ docker run -it --rm \
 -w /tmp \
 skywills87/card-detect-base python ./cropped.py -s /tmp/source -t /tmp/target
 
-
+docker build -f gpu.dockerfile -t skywills87/opencv-cuda-tensorflow:gpu-jupyter
 docker run -it --rm -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 skywills87/opencv-tensorflow:jupyter
 
 docker run -it --rm -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 opencv-tensorflow:jupyter
+
+
+docker run -it --rm --gpus all -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 skywills87/opencv-tensorflow:gpu-jupyter
