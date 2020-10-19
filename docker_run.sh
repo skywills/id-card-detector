@@ -23,3 +23,6 @@ docker run -it --rm -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 opencv
 
 
 docker run -it --rm --gpus all -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 skywills87/opencv-tensorflow:gpu-jupyter
+
+
+https://github.com/datamachines/cuda_tensorflow_opencv
