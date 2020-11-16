@@ -58,7 +58,7 @@ def is_jpg(path):
 
 def save_image(path, img):
     if(is_jpg(path)):
-        cv2.imwrite(path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB),[cv2.IMWRITE_JPEG_QUALITY, 85])
+        cv2.imwrite(path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB),[cv2.IMWRITE_JPEG_QUALITY, 100])
     else:
         cv2.imwrite(path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
@@ -71,7 +71,7 @@ def crop_image(src_path, target_path):
     print('has face ', hasFace)
     if (hasFace):
         cropped = hed_util.crop_image(net, img)
-        if(cropped is None or not face_detect.hasFaces(cropped) or cropped.shape[0] < min_height):
+        if(cropped is None or not dlib_face_detect.hasFaces(cropped) or cropped.shape[0] < min_height):
             cropped = img
             if(cropped is None):
                 print('failed to crop image')
@@ -81,7 +81,7 @@ def crop_image(src_path, target_path):
                 print('no face detected')
             #print('cropped image dont have face or has no contour or does not meet min height {} img height {}'
             #.format( min_height, cropped.shape[0]))
-            target_path = rename_withprefix(target_path,'origin')
+            #target_path = rename_withprefix(target_path,'origin')
         else:
             #cropped = try_rotate_image(cropped)
             target_path = rename_withprefix(target_path,'cropped')
@@ -94,7 +94,7 @@ def crop_image(src_path, target_path):
 
 def try_rotate_image_with_face_detect(img):
     # rotate with 4 angle, 0, 90, 180,270
-    for i in range(3):
+    for i in range(4):
         print('trying to rotate image counterclockwise to {} degree'.format(i * 90))
         raw = img if i == 0 else np.rot90(img,i)
         hasFace = dlib_face_detect.hasFaces(raw)
