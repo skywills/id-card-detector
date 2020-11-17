@@ -55,3 +55,15 @@ def findContour(gray, convert_binary=False):
 
     return contours, last_cnt
 
+def crop_image(image):
+    if(len(image.shape)==2):
+        gray = image
+    else:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.bilateralFilter(gray, 5, 90, 90)
+    contours, last_cnt = findContour(gray, convert_binary=True)
+    if (last_cnt is None):
+        return None
+    x,y,w,h = cv2.boundingRect(contours[len(contours)-1])
+    #print('x {} y {} w {} h {}'.format(x,y,w,h))
+    return image[y:y+h, x:x+w]
